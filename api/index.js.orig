@@ -1,15 +1,16 @@
-const keys = require("./keys")
+import express from "express"
+import cors from "cors"
+import redis from "redis"
+import { Pool } from "pg"
 
-// Express App Setup
-const express = require("express")
-const cors = require("cors")
+import keys from "./keys"
 
+//Express server setup
 const app = express()
 app.use(cors())
 app.use(express.json())
 
-// Postgres Client Setup
-const { Pool } = require("pg")
+// PostGres client setup
 const pgClient = new Pool({
   user: keys.pgUser,
   host: keys.pgHost,
@@ -17,30 +18,29 @@ const pgClient = new Pool({
   password: keys.pgPassword,
   port: keys.pgPort
 })
+
 pgClient.on("error", () => console.log("Lost PG connection"))
 
 pgClient
-  .query("CREATE TABLE IF NOT EXISTS values (number INT)")
+  .query("CREATE TABLE IF NOT EXISTS values (NUMBER INT)")
   .catch((err) => console.log(err))
 
-// Redis Client Setup
-const redis = require("redis")
+// Redis Client setup
 const redisClient = redis.createClient({
   host: keys.redisHost,
   port: keys.redisPort,
   retry_strategy: () => 1000
 })
+
 const redisPublisher = redisClient.duplicate()
 
 // Express route handlers
-
 app.get("/", (req, res) => {
   res.send("Hi")
 })
 
 app.get("/values/all", async (req, res) => {
-  const values = await pgClient.query("SELECT * from values")
-
+  const values = await pgClient.query("SELECT * FROM values")
   res.send(values.rows)
 })
 
@@ -59,11 +59,12 @@ app.post("/values", async (req, res) => {
 
   redisClient.hset("values", index, "Nothing yet!")
   redisPublisher.publish("insert", index)
-  pgClient.query("INSERT INTO values(number) VALUES($1)", [index])
+
+  pgClient.query("INSERT INTO values (number) values ($1)", [parseInt(index)])
 
   res.send({ working: true })
 })
 
-app.listen(5000, (err) => {
-  console.log("Listening")
+app.listen(5000, () => {
+  console.log("Listening on port 5000")
 })

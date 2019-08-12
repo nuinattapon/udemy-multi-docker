@@ -1,11 +1,9 @@
-const keys = {
-  redisHost: process.env.REDIS_HOST || "localhost",
-  redisPort: process.env.REDIS_PORT || 6379,
-  pgUser: process.env.PGUSER || "postgres",
+module.exports = {
+  redisHost: process.env.REDIS_HOST,
+  redisPort: process.env.REDIS_PORT,
+  pgUser: process.env.PGUSER,
   pgHost: process.env.PGHOST,
   pgDatabase: process.env.PGDATABASE,
   pgPassword: process.env.PGPASSWORD,
-  pgPort: process.env.PGPORT || 5432
-}
-
-export default keys
+  pgPort: process.env.PGPORT
+};

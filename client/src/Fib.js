@@ -1,11 +1,13 @@
 import React, { Component } from "react"
 import axios from "axios"
+
 class Fib extends Component {
   state = {
     seenIndexes: [],
     values: {},
     index: ""
   }
+
   componentDidMount() {
     this.fetchValues()
     this.fetchIndexes()
@@ -18,11 +20,14 @@ class Fib extends Component {
 
   async fetchIndexes() {
     const seenIndexes = await axios.get("/api/values/all")
-    this.setState({ seenIndexes: seenIndexes.data })
+    this.setState({
+      seenIndexes: seenIndexes.data
+    })
   }
 
   handleSubmit = async (event) => {
     event.preventDefault()
+
     await axios.post("/api/values", {
       index: this.state.index
     })
@@ -35,6 +40,7 @@ class Fib extends Component {
 
   renderValues() {
     const entries = []
+
     for (let key in this.state.values) {
       entries.push(
         <div key={key}>
@@ -42,17 +48,17 @@ class Fib extends Component {
         </div>
       )
     }
+
+    return entries
   }
+
   render() {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="">Enter your index:</label>
+          <label>Enter your index:</label>
           <input
-            type="text"
-            name=""
-            id=""
-            values={this.state.index}
+            value={this.state.index}
             onChange={(event) => this.setState({ index: event.target.value })}
           />
           <button>Submit</button>
