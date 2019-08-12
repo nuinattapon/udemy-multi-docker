@@ -1,5 +1,5 @@
-import keys from "./keys"
 import redis from "redis"
+import keys from "./keys"
 
 const redisClient = redis.createClient({
   host: keys.redisHost,

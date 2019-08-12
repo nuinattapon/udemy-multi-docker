@@ -1,0 +1,77 @@
+version: "3"
+services:
+  nginx:
+    container_name: nui_nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    restart: always
+    expose:
+      - 80
+    ports:
+      - 3050:80
+    depends_on:
+      - client
+      - api
+
+  worker:
+    container_name: nui_worker
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.dev
+    image: nui/worker
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+  client:
+    container_name: nui_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    image: nui/client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    expose:
+      - 3000
+    depends_on:
+      - api
+
+  api:
+    container_name: nui_api
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    image: nui/server
+    volumes:
+      - /app/node_modules
+      - ./api:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+    expose:
+      - 5000
+    depends_on:
+      - redis
+      - postgres
+  redis:
+    container_name: nui_redis
+    image: redis:alpine
+    expose:
+      - 6379
+
+  postgres:
+    container_name: nui_postgres
+    image: postgres:alpine
+    expose:
+      - 5432
