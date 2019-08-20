@@ -32,6 +32,8 @@ class Fib extends Component {
       index: this.state.index
     })
     this.setState({ index: "" })
+    this.fetchValues()
+    this.fetchIndexes()
   }
 
   renderSeenIndexes() {
@@ -40,7 +42,7 @@ class Fib extends Component {
 
   renderValues() {
     const entries = []
-
+    // eslint-disable-next-line
     for (let key in this.state.values) {
       entries.push(
         <div key={key}>
@@ -55,19 +57,26 @@ class Fib extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form className="form-group" onSubmit={this.handleSubmit}>
           <label>Enter your index:</label>
           <input
+            type="number"
+            className="form-control mb-2"
+            id="number"
+            name="number"
+            placeholder="Please give me a number"
             value={this.state.index}
             onChange={(event) => this.setState({ index: event.target.value })}
           />
-          <button>Submit</button>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
         </form>
 
-        <h3>Indexes I have seen:</h3>
+        <h6>Indexes I have seen:</h6>
         {this.renderSeenIndexes()}
 
-        <h3>Calculated Values:</h3>
+        <h6>Calculated Values:</h6>
         {this.renderValues()}
       </div>
     )

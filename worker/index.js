@@ -15,7 +15,9 @@ const fib = (index) => {
 }
 
 sub.on("message", (channel, message) => {
-  redisClient.hset("values", message, fib(parseInt(message)))
+  const fib_value = fib(parseInt(message))
+  redisClient.hset("values", message, fib_value)
+  console.log(`Fibonacci of ${message} is ${fib_value}`)
 })
 
 sub.subscribe("insert")

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 const OtherPage = () => {
   return (
     <div>
-      <p>I am some other page!</p>
+      <h2>I am some other page!</h2>
       <Link to="/">Go back home</Link>
     </div>
   )
