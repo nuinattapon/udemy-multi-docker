@@ -1,6 +1,7 @@
 **/node_modules/
 **/node_modules_linux/
 **/Dockerfile
+**/Dockerfile.dev
 **/.dockerignore
 **/.gitignore
 **/.git
