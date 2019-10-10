@@ -4,8 +4,8 @@ services:
     container_name: nui_nginx
     build:
       context: ./nginx
-      dockerfile: Dockerfile
-    image: gcr.io/nattapon/nui_nginx
+      dockerfile: Dockerfile.dev
+    image: gcr.io/nattapon/nui_nginx_dev
     restart: always
     expose:
       - 80
@@ -14,12 +14,16 @@ services:
     depends_on:
       - client
       - api
+
   worker:
     container_name: nui_worker
     build:
       context: ./worker
-      dockerfile: Dockerfile
-    image: gcr.io/nattapon/nui_worker
+      dockerfile: Dockerfile.dev
+    image: gcr.io/nattapon/nui_worker_dev
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -29,8 +33,11 @@ services:
     container_name: nui_client
     build:
       context: ./client
-      dockerfile: Dockerfile
-    image: gcr.io/nattapon/nui_client
+      dockerfile: Dockerfile.dev
+    image: gcr.io/nattapon/nui_client_dev
+    volumes:
+      - /app/node_modules
+      - ./client:/app
     expose:
       - 3000
     depends_on:
@@ -39,8 +46,11 @@ services:
     container_name: nui_api
     build:
       context: ./api
-      dockerfile: Dockerfile
-    image: gcr.io/nattapon/nui_api
+      dockerfile: Dockerfile.dev
+    image: gcr.io/nattapon/nui_api_dev
+    volumes:
+      - /app/node_modules
+      - ./api:/app
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -59,7 +69,6 @@ services:
     image: redis:alpine
     expose:
       - 6379
-
   postgres:
     container_name: nui_postgres
     image: postgres:alpine

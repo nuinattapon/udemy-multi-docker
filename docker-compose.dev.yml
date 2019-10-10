@@ -5,7 +5,7 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile.dev
-    image: gcr.io/nattapon/nui_nginx
+    image: gcr.io/nattapon/nui_nginx_dev
     restart: always
     expose:
       - 80
@@ -20,7 +20,7 @@ services:
     build:
       context: ./worker
       dockerfile: Dockerfile.dev
-    image: gcr.io/nattapon/nui_worker
+    image: gcr.io/nattapon/nui_worker_dev
     volumes:
       - /app/node_modules
       - ./worker:/app
@@ -34,7 +34,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
-    image: gcr.io/nattapon/nui_client
+    image: gcr.io/nattapon/nui_client_dev
     volumes:
       - /app/node_modules
       - ./client:/app
@@ -47,7 +47,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile.dev
-    image: gcr.io/nattapon/nui_api
+    image: gcr.io/nattapon/nui_api_dev
     volumes:
       - /app/node_modules
       - ./api:/app
@@ -74,5 +74,5 @@ services:
     image: postgres:alpine
     expose:
       - 5432
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+    # volumes:
+    #   - ./postgres-data:/var/lib/postgresql/data
