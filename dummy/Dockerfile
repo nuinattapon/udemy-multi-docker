@@ -1,0 +1,16 @@
+FROM node:lts-alpine as builder
+
+WORKDIR /app
+COPY ./package.json ./
+
+RUN npm install
+COPY ./ ./
+
+FROM node:lts-alpine
+WORKDIR /app
+COPY --from=builder /app .
+RUN chown -R node:node /app
+
+EXPOSE 3000
+USER node
+CMD ["npm", "start"]
