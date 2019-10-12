@@ -32,7 +32,10 @@ spec:
               value: postgres-svc
             - name: PGDATABASE
               value: postgres
-            - name: PGPASSWORD
-              value: postgres_password
             - name: PGPORT
               value: "5432"
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: PGPASSWORD
