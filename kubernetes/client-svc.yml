@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: client-svc
 spec:
+  type: ClusterIP
   selector:
     app: client
   ports:

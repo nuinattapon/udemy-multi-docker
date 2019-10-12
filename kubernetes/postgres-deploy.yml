@@ -14,10 +14,18 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:alpine
+          image: postgres
           resources:
             limits:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: "256Mi"
+              cpu: "200m"
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
