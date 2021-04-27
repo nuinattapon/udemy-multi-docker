@@ -13,6 +13,6 @@
   "dependencies": {
     "esm": "^3.2.25",
     "nodemon": "^1.19.3",
-    "redis": "^2.8.0"
+    "redis": "^3.1.1"
   }
 }
